@@ -9,8 +9,6 @@ import '../css/Game.css';
 import Footer from '../components/Footer';
 
 const correctAnswer = 'correct-answer';
-// const { player } = JSON.parse(localStorage.getItem('state'));
-// const userHash = md5(player.gravatarEmail).toString();
 
 class Game extends Component {
   constructor() {
@@ -25,7 +23,8 @@ class Game extends Component {
       redirect: false,
     };
     this.setQuestionsInState = this.setQuestionsInState.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleNextBtn = this.handleNextBtn.bind(this);
+    this.handleAlternative = this.handleAlternative.bind(this);
     this.resetSeconds = this.resetSeconds.bind(this);
     this.shuffle = this.shuffle.bind(this);
     this.createTimer = this.createTimer.bind(this);
@@ -124,12 +123,11 @@ class Game extends Component {
     }, ONE_SECOND);
   }
 
-  handleClick({ target }) {
+  handleNextBtn() {
     const { currentQuestion } = this.state;
-    const BUTTON_ID = target.getAttribute('data-testid');
     const MAX_CLICKS = 4;
-    if (BUTTON_ID === 'btn-next'
-      && currentQuestion < MAX_CLICKS) {
+
+    if (currentQuestion < MAX_CLICKS) {
       this.setState((prevState) => ({
         currentQuestion: prevState.currentQuestion + 1,
         classname: '',
@@ -138,25 +136,25 @@ class Game extends Component {
         disabled: false,
         isShuffled: false,
       }));
-    } else if (BUTTON_ID === 'btn-next'
-    && currentQuestion === MAX_CLICKS) {
+    } else if (currentQuestion === MAX_CLICKS) {
       this.setState({ redirect: true });
-    }
-    if (BUTTON_ID.includes('answer')) {
-      this.setState({
-        classname: 'answers-reveal',
-        userResponse: true,
-        disabled: true,
-      });
-      clearInterval(this.cronometerInterval);
-      this.handleRightAnswer(BUTTON_ID);
     }
   }
 
-  handleRightAnswer(buttonId) {
-    if (buttonId === 'correct-answer') {
+  handleAlternative({ target }) {
+    const BUTTON_ID = target.getAttribute('data-testid');
+
+    if (BUTTON_ID === 'correct-answer') {
       this.calculateScore();
     }
+
+    this.setState({
+      classname: 'answers-reveal',
+      userResponse: true,
+      disabled: true,
+    });
+
+    clearInterval(this.cronometerInterval);
   }
 
   renderTimer() {
@@ -196,7 +194,7 @@ class Game extends Component {
                 <Button
                   key={ index }
                   dataTestId={ value }
-                  onClick={ this.handleClick }
+                  onClick={ this.handleAlternative }
                   disabled={ disabled }
                   value={ alternative }
                 />
@@ -208,7 +206,7 @@ class Game extends Component {
                 dataTestId="btn-next"
                 value="Next Question"
                 className="next-question-btn"
-                onClick={ this.handleClick }
+                onClick={ this.handleNextBtn }
               /> }
             </div>
           </div>
