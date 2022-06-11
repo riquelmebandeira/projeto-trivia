@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { decode } from 'html-entities';
 import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
@@ -186,7 +187,7 @@ class Game extends Component {
           <div className={ classname }>
             <div className="game__headings">
               <h4 data-testid="question-category">{questionInfo.category}</h4>
-              <p data-testid="question-text">{questionInfo.question}</p>
+              <p data-testid="question-text">{decode(questionInfo.question)}</p>
             </div>
             <div className="game__alternatives">
               { answers
