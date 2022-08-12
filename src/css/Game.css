@@ -46,14 +46,12 @@
 }
 
 .game__alternatives {
-  align-items: center;
   display: flex;
-  flex-flow: column wrap;
+  flex-wrap: wrap;
   gap: 10px;
-  height: 5em;
   justify-content: center;
   margin: auto;
-  width: 44.6rem;
+  width: 45em;
 }
 
 .game__alternatives button {

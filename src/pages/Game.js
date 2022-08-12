@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import { getQuestions } from '../services/requests';
+import getQuestions from '../services/requests';
 import '../css/Game.css';
 import Footer from '../components/Footer';
 
